@@ -80,43 +80,46 @@ const navItems = [
     }
 ]
 
-
 const Sidebar = ({
+    user,
     drawerWidth,
     isSidebarOpen,
     setIsSidebarOpen,
     isNonMobile
 }) => {
 
-    const { pathname } = useLocation()
-    const [active, setActive] = useState("")
-    const navigate = useNavigate()
-    const theme = useTheme()
+    const { pathname } = useLocation();
+    const [active, setActive] = useState("");
+    const navigate = useNavigate();
+    const theme = useTheme();
     
     useEffect(() => {
-        setActive(pathname.substring(1))
-    }, [pathname])
+        setActive(pathname.substring(1));
+    }, [pathname]);
 
     return (
         <Box component="nav">
             {isSidebarOpen && (
                 <Drawer
-                open={isSidebarOpen}
-                onClose={() => setIsSidebarOpen(false)}
-                variant='persistent'
-                anchor='left'
-                sx={{
-                    width: drawerWidth,
-                    '& .MuiDrawer-paper': {
-                        color: theme.palette.secondary[200],
-                        boxSizing: 'border-box',
-                        backgroundColor: theme.palette.background.default,
-                        borderWidth: isNonMobile ? 0 : "2px",
+                    open={isSidebarOpen}
+                    onClose={() => setIsSidebarOpen(false)}
+                    variant='persistent'
+                    anchor='left'
+                    sx={{
                         width: drawerWidth,
-                    }
-                }}
+                        '& .MuiDrawer-paper': {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            color: theme.palette.secondary[200],
+                            boxSizing: 'border-box',
+                            backgroundColor: theme.palette.background.default,
+                            borderWidth: isNonMobile ? 0 : "2px",
+                            width: drawerWidth,
+                        }
+                    }}
                 >
-                    <Box width="100%" >
+                    <Box>
                         <Box m="1.5rem 2rem 2rem 3rem">
                             <FlexBetween color={theme.palette.secondary.main}>
                                 <Box display="flex" alignItems="center" gap="0.5rem">
@@ -129,46 +132,86 @@ const Sidebar = ({
                                 )}
                             </FlexBetween>
                         </Box>
-                        <List>
-                        {navItems.map(({text, icon}) => {
-                            if (!icon) {
-                                return (
-                                    <Typography key={text} sx={{m:"2.25rem 0 1rem 3rem"}}>{text}</Typography>
-                                )
-                            }
-                            const lowerCaseText = text.toLowerCase();
+                        <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
+                            <List>
+                                {navItems.map(({ text, icon }) => {
+                                    if (!icon) {
+                                        return (
+                                            <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>{text}</Typography>
+                                        );
+                                    }
+                                    const lowerCaseText = text.toLowerCase();
 
-                            return(
-                                <ListItem key={text} disablePadding>
-                                    <ListItemButton 
-                                    onClick={() =>{ navigate(`/${lowerCaseText}`);
-                                    setActive(lowerCaseText);
-                                    }}
-                                    sx={{
-                                        backgroundColor: active === lowerCaseText ? theme.palette.secondary[300] : "transparent",
-                                        color: active === lowerCaseText ? theme.palette.primary[600] : theme.palette.secondary[100]
-                                    }}
-                                    >
-                                        <ListItemIcon sx={{
-                                            ml: "2rem",
-                                            color: active === lowerCaseText ? theme.palette.primary[600] : theme.palette.secondary[200]
-                                        }}>
-                                            {icon}
-                                        </ListItemIcon>
-                                        <ListItemText primary={text} />
-                                        {active === lowerCaseText && (
-                                            <ChevronRightOutlined sx={{ml: "auto"}} />
-                                        )}
-                                    </ListItemButton>
-                                </ListItem>
-                            )
-                        })} 
-                        </List>
+                                    return (
+                                        <ListItem key={text} disablePadding>
+                                            <ListItemButton 
+                                                onClick={() => { navigate(`/${lowerCaseText}`); setActive(lowerCaseText); }}
+                                                sx={{
+                                                    backgroundColor: active === lowerCaseText ? theme.palette.secondary[300] : "transparent",
+                                                    color: active === lowerCaseText ? theme.palette.primary[600] : theme.palette.secondary[100]
+                                                }}
+                                            >
+                                                <ListItemIcon sx={{
+                                                    ml: "2rem",
+                                                    color: active === lowerCaseText ? theme.palette.primary[600] : theme.palette.secondary[200]
+                                                }}>
+                                                    {icon}
+                                                </ListItemIcon>
+                                                <ListItemText primary={text} />
+                                                {active === lowerCaseText && (
+                                                    <ChevronRightOutlined sx={{ ml: "auto" }} />
+                                                )}
+                                            </ListItemButton>
+                                        </ListItem>
+                                    );
+                                })}
+                            </List>
+                        </Box>
+                    </Box>
+                    <Box sx={{ p: "1rem" }}>
+                        <Divider />
+                        
+                        <FlexBetween
+                            textTransform="none"
+                            gap="2rem"
+                            m="1.5rem 2rem 0 1rem"
+                        >
+                            <Box
+                                component="img"
+                                alt="profile"
+                                src={profileImage}
+                                sx={{
+                                    width: "40px",
+                                    height: "40px",
+                                    borderRadius: "50%",
+                                    objectFit: "cover"
+                                }}
+                            />
+                            <Box textAlign="left">
+                                <Typography 
+                                    fontWeight="bold"
+                                    fontSize="0.9rem"
+                                    sx={{ color: theme.palette.secondary[100] }}
+                                >
+                                    {user.fullName}
+                                </Typography>
+                                <Typography 
+                                    fontSize="0.rem"
+                                    sx={{ color: theme.palette.secondary[200] }}
+                                >
+                                    {user.role}
+                                </Typography>
+                            </Box>
+                            <IconButton>
+                                <SettingsOutlined sx={{ color: theme.palette.secondary[300], fontSize: "25px"}} />
+                            </IconButton>
+                        </FlexBetween>
                     </Box>
                 </Drawer>
             )}
         </Box>
-    )
-}
+    );
+};
+
 
 export default Sidebar

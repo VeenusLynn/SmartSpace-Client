@@ -6,6 +6,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { themeSettings } from "theme";
 import Layout from "./scenes/layout";
 import Dashboard from "./scenes/dashboard";
+import Login from "scenes/login";
+import Register from "scenes/register";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -18,9 +20,12 @@ function App() {
           <CssBaseline />
           <Routes>
             <Route element={<Layout />}>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />
             </Route>
+            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/home" element={<h1>Home</h1>} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
