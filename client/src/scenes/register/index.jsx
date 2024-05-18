@@ -3,6 +3,7 @@ import { Box,useMediaQuery } from '@mui/material'
 import cargo from 'assets/cargo.jpg'
 import logoLight from 'assets/logoLight.png'
 import { useNavigate } from 'react-router-dom'
+import Form from 'scenes/register/form'
 
 const Register = () => {
     const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -74,6 +75,7 @@ const Register = () => {
                     }}
                 >
                     {/* Content for the light blue box : aka Register form */}
+                    <Form />
                 </Box>
                 
             </Box>

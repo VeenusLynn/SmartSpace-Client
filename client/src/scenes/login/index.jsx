@@ -3,6 +3,8 @@ import { Box, useMediaQuery } from '@mui/material'
 import cargo from 'assets/cargo.jpg'
 import logoLight from 'assets/logoLight.png'
 import { useNavigate } from 'react-router-dom'
+import Form from 'scenes/login/form'
+
 
 const Login = () => {
     const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -46,6 +48,19 @@ const Login = () => {
                     }}
                 >
                     {/* Content for the light blue box : aka login form */}
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "80%",
+                            height: "80%",
+                        }}
+                    >
+                       <Form />
+                        
+                    </Box>
                 </Box>
                 <Box
                     sx={{
