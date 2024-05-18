@@ -107,6 +107,7 @@ const Form = () => {
                   borderBottom: errors.email && touched.email ? '2px solid red' : '2px solid #071330',
                 },
                 marginBottom: '2rem',
+                color: '#071330',
               }}
             />
             {errors.email && touched.email && (
@@ -162,6 +163,7 @@ const Form = () => {
                 '&:after': {
                   borderBottom: errors.password && touched.password ? '2px solid red' : '2px solid #071330',
                 },
+                color: '#071330',
               }}
             />
             {errors.password && touched.password && (

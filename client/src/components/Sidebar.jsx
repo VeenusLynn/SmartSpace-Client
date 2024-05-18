@@ -17,13 +17,14 @@ import {
     ChevronLeft, 
     ChevronRightOutlined, 
     HomeOutlined, 
-    ShoppingCartOutlined,
-    Groups2Outlined,
-    ReceiptLongOutlined,
     AdminPanelSettingsOutlined,
     TrendingUpOutlined,
-    PieChartOutline,
-    PointOfSaleOutlined
+    WarehouseOutlined,
+    InventoryOutlined,
+    PeopleOutline,
+    BugReportOutlined,
+    ArticleOutlined,
+    CameraOutdoorOutlined
 } from '@mui/icons-material'
 import { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -39,44 +40,44 @@ const navItems = [
         icon: <HomeOutlined />,
     },
     {
-        text: "Client Facing",
+        text: "Management Interfaces",
         icon: null,
     },
     {
-        text: "Products",
-        icon: <ShoppingCartOutlined />,
+        text: "Warehouse",
+        icon: <WarehouseOutlined />,
+    },
+    {
+        text: "Inventory",
+        icon: <InventoryOutlined />,
     },
     {
         text: "Customers",
-        icon: <Groups2Outlined />,
+        icon: <PeopleOutline />,
     },
     {
-        text: "Transactions",
-        icon: <ReceiptLongOutlined />,
+        text: "Video Processing",
+        icon: <CameraOutdoorOutlined />,
     },
     {
-        text: "Sales",
-        icon: null,
-    },
-    {
-        text: "Overview",
-        icon: <PointOfSaleOutlined />,
-    },
-    {
-        text: "Breakdown",
-        icon: <PieChartOutline />,
-    },
-    {
-        text: "Management",
-        icon: null,
+        text: "Reports",
+        icon: <ArticleOutlined />,
     },
     {
         text: "Admin",
+        icon: null,
+    },
+    {
+        text: "Control Panel",
         icon: <AdminPanelSettingsOutlined />,
     },
     {
-        text: "performance",
+        text: "Performance",
         icon: <TrendingUpOutlined />,
+    },
+    {
+        text: "Bug Reports",
+        icon: <BugReportOutlined />,
     }
 ]
 
