@@ -5,9 +5,9 @@ import React from 'react'
 const Header = ({title, subtitle}) => {
     const theme = useTheme()
     return (
-        <Box>
+        <Box margin="10px">
             <Typography 
-                variant="h2" 
+                variant="h1" 
                 color={theme.palette.secondary[100]}
                 fontWeight="bold"
                 sx={{ mb: "5px"}}    
@@ -15,7 +15,7 @@ const Header = ({title, subtitle}) => {
                 {title}
             </Typography>
             <Typography 
-                variant="h5" 
+                variant="h3" 
                 color={theme.palette.secondary[300]}  
             >
                 {subtitle}

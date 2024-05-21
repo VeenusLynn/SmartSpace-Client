@@ -24,14 +24,14 @@ export const tokensDark = {
     500: "#21295c",
     600: "#191F45", // manually adjusted
     700: "#141937",
-    800: "#0d1025",
+    800: "#071330",
     900: "#070812",
   },
   secondary: {
     // lighter blue
     50: "#f0f0f0", // manually adjusted
     100: "#c3ceda",
-    200: "#c3ceda",
+    200: "#D9E4EC",
     300: "#adc3db",
     400: "#84aedb",
     500: "#5278a1",
@@ -81,8 +81,8 @@ export const themeSettings = (mode) => {
               main: tokensDark.grey[500],
             },
             background: {
-              default: tokensDark.primary[600],
-              alt: tokensDark.primary[500],
+              default: tokensDark.secondary[800],
+              alt: tokensDark.secondary[700],
             },
           }
         : {
@@ -102,36 +102,36 @@ export const themeSettings = (mode) => {
               main: tokensDark.grey[500],
             },
             background: {
-              default: tokensDark.grey[0],
-              alt: tokensDark.grey[50],
+              default: tokensDark.grey[10],
+              alt: tokensDark.grey[10],
             },
           }),
     },
     typography: {
-      fontFamily: ["Inter", "sans-serif"].join(","),
-      fontSize: 12,
+      fontFamily: ["Jaldi", "sans-serif"].join(","),
+      fontSize: 14,
       h1: {
-        fontFamily: ["Inter", "sans-serif"].join(","),
+        fontFamily: ["Jaldi", "sans-serif"].join(","),
         fontSize: 40,
       },
       h2: {
-        fontFamily: ["Inter", "sans-serif"].join(","),
+        fontFamily: ["Jaldi", "sans-serif"].join(","),
         fontSize: 32,
       },
       h3: {
-        fontFamily: ["Inter", "sans-serif"].join(","),
+        fontFamily: ["Jaldi", "sans-serif"].join(","),
         fontSize: 24,
       },
       h4: {
-        fontFamily: ["Inter", "sans-serif"].join(","),
+        fontFamily: ["Jaldi", "sans-serif"].join(","),
         fontSize: 20,
       },
       h5: {
-        fontFamily: ["Inter", "sans-serif"].join(","),
+        fontFamily: ["Jaldi", "sans-serif"].join(","),
         fontSize: 16,
       },
       h6: {
-        fontFamily: ["Inter", "sans-serif"].join(","),
+        fontFamily: ["Jaldi", "sans-serif"].join(","),
         fontSize: 14,
       },
     },

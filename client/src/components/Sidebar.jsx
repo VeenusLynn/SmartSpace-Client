@@ -10,7 +10,8 @@ import {
     ListItemIcon,
     ListItemText,
     Typography,
-    useTheme
+    useTheme,
+    InputBase
  } from '@mui/material'
 import { 
     SettingsOutlined, 
@@ -18,13 +19,13 @@ import {
     ChevronRightOutlined, 
     HomeOutlined, 
     AdminPanelSettingsOutlined,
-    TrendingUpOutlined,
     WarehouseOutlined,
     InventoryOutlined,
-    PeopleOutline,
     BugReportOutlined,
     ArticleOutlined,
-    CameraOutdoorOutlined
+    CameraOutdoorOutlined,
+    Search,
+    HelpOutline
 } from '@mui/icons-material'
 import { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -52,11 +53,7 @@ const navItems = [
         icon: <InventoryOutlined />,
     },
     {
-        text: "Customers",
-        icon: <PeopleOutline />,
-    },
-    {
-        text: "Video Processing",
+        text: "VideoProcessing",
         icon: <CameraOutdoorOutlined />,
     },
     {
@@ -64,19 +61,19 @@ const navItems = [
         icon: <ArticleOutlined />,
     },
     {
+        text: "FAQ",
+        icon: <HelpOutline />,
+    },
+    {
         text: "Admin",
         icon: null,
     },
     {
-        text: "Control Panel",
+        text: "ControlPanel",
         icon: <AdminPanelSettingsOutlined />,
     },
     {
-        text: "Performance",
-        icon: <TrendingUpOutlined />,
-    },
-    {
-        text: "Bug Reports",
+        text: "BugReports",
         icon: <BugReportOutlined />,
     }
 ]
@@ -114,7 +111,7 @@ const Sidebar = ({
                             justifyContent: 'space-between',
                             color: theme.palette.secondary[200],
                             boxSizing: 'border-box',
-                            backgroundColor: theme.palette.background.default,
+                            backgroundColor: theme.palette.mode === "dark" ? theme.palette.primary[800] : theme.palette.secondary[900] ,
                             borderWidth: isNonMobile ? 0 : "2px",
                             width: drawerWidth,
                         }
@@ -126,11 +123,27 @@ const Sidebar = ({
                                 <Box display="flex" alignItems="center" gap="0.5rem">
                                     {theme.palette.mode === "dark" ? (<img src={logoDark} alt="logoDark" style={{ width: "120px", height: "70px"}} />) : <img src={logoLight} alt="logoLight" style={{ width: "120px", height: "70px"}} />}
                                 </Box>
+                
                                 {!isNonMobile && (
                                     <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
                                         <ChevronLeft />
                                     </IconButton>
                                 )}
+                            </FlexBetween>
+                        </Box>
+                        <Box>
+                            <FlexBetween
+                                backgroundColor={theme.palette.background.alt}
+                                borderRadius="15px"
+                                gap="3.5rem"
+                                padding="0.1rem 1rem"
+                                width="80%"
+                                margin="1.5rem"
+                                >
+                                <InputBase placeholder='Search ...'></InputBase>
+                                <IconButton>
+                                    <Search />
+                                </IconButton>
                             </FlexBetween>
                         </Box>
                         <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
@@ -149,7 +162,8 @@ const Sidebar = ({
                                                 onClick={() => { navigate(`/${lowerCaseText}`); setActive(lowerCaseText); }}
                                                 sx={{
                                                     backgroundColor: active === lowerCaseText ? theme.palette.secondary[300] : "transparent",
-                                                    color: active === lowerCaseText ? theme.palette.primary[600] : theme.palette.secondary[100]
+                                                    color: active === lowerCaseText ? theme.palette.primary[600] : theme.palette.secondary[100],
+                                                    borderRadius: "15px"
                                                 }}
                                             >
                                                 <ListItemIcon sx={{
