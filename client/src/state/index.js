@@ -2,8 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   mode: "dark",
-  userId: null,
+  userId: "664dc03cb27c8db1da21d597",
   user: null,
+  role: "admin",
   accessToken: null,
 };
 
@@ -16,8 +17,9 @@ export const globalSlice = createSlice({
     },
     setLogin: (state, action) => {
       state.user = action.payload.user;
-      state.accessToken = action.payload.accessTokenoken;
+      state.accessToken = action.payload.accessToken;
       state.userId = action.payload.user._id;
+      state.role = action.payload.user.role;
     },
     setLogout: (state) => {
       state.user = null;

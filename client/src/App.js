@@ -33,8 +33,8 @@ function App() {
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/videoprocessing" element={<VideoProcessing />} />
               <Route path="/controlpanel" element={<ControlPanel />} />
-              <Route path="/faq" element={<FAQ />} />
               <Route path="/bugreports" element={<BugReport />} />
+              <Route path="/faq" element={<FAQ />} />
             </Route>
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<Login />} />

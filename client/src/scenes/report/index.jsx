@@ -1,89 +1,155 @@
 import React, { useState } from 'react';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, Box } from '@mui/material';
-import { Formik, Form, Field } from 'formik';
+import { Button, Typography, Box, useTheme, TextField, Card, CardContent } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { useGetReportsQuery } from 'state/api';
 
 const Report = () => {
-  const [open, setOpen] = useState(false);
-  const [reports, setReports] = useState([]);
+  const theme = useTheme();
+  const role = useSelector((state) => state.global.role);
+  const userId = useSelector((state) => state.global.userId); 
+  const [showForm, setShowForm] = useState(false);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
+  const { data: reports, isLoading, refetch } = useGetReportsQuery();
 
   const handleCreateReport = () => {
-    setOpen(true);
+    setShowForm(!showForm);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const reportData = { title, content, userId };
 
-  const handleSaveReport = (values, { resetForm }) => {
-    setReports([...reports, { title: values.title, content: values.content }]);
-    setOpen(false);
-    resetForm();
+    fetch('http://localhost:5000/report/make-report', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(reportData),
+    })
+    .then(response => response.json())
+    .then(data => {
+      
+      refetch();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
+    setShowForm(false);
+    setTitle('');
+    setContent('');
   };
 
   return (
     <Box padding="2rem">
       <Box display="flex" justifyContent="center" marginBottom="20px">
-        <Button variant="contained" color="primary" style={{ marginRight: '80px', width:"35%", height:"25%", fontSize:"16px"}} onClick={handleCreateReport}>Create Report</Button>
-        <Button variant="contained" color="primary" style={{ width:"35%", height:"25%", fontSize:"16px" }} onClick={() => {}}>Display All Reports</Button>
+        {role === 'admin' && (
+          <>
+            <Button 
+              variant="contained" 
+              sx={{ 
+                backgroundColor: theme.palette.mode === "dark" ? theme.palette.primary[800] : theme.palette.secondary[900],
+                marginRight: '20px',
+                width: '35%',
+                height: '100%', 
+                fontSize: '16px',
+              }} 
+              onClick={handleCreateReport}
+            >
+              {showForm ? "Close Form" : "Create Report"}
+            </Button>
+            <Button 
+              variant="contained" 
+              sx={{ 
+                backgroundColor: theme.palette.mode === "dark" ? theme.palette.primary[800] : theme.palette.secondary[900],
+                width: '35%',
+                height: '100%',
+                fontSize: '16px', 
+              }} 
+              onClick={refetch}
+            >
+              Display All Reports
+            </Button>
+          </>
+        )}
+        {role === 'staff' && (
+          <Button 
+            variant="contained" 
+            sx={{ 
+              backgroundColor: theme.palette.mode === "dark" ? theme.palette.primary[800] : theme.palette.secondary[900],
+              width: '35%',
+              height: '100%',
+              fontSize: '16px', 
+            }} 
+            onClick={handleCreateReport}
+          >
+            {showForm ? "Close Form" : "Create Report"}
+          </Button>
+        )}
       </Box>
 
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle fontSize="24px" >Create Report</DialogTitle>
-        <DialogContent style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '500px', height: '400px' }}>
-          <Formik
-            initialValues={{ title: '', content: '' }}
-            onSubmit={handleSaveReport}
-          >
-            {({ submitForm }) => (
-              <Form>
-                <Box>
-                  <Typography 
-                  sx={{
-                    fontSize: "20px",
-                    fontWeight: "bold",                  
-                  }}
-                  >Title</Typography>
-                  <Field
-                    name="title"
-                    type="text"
-                    required
-                    fullWidth
-                    
-                  />
-                </Box>
-                <Box>
-                  <Typography sx={{
-                    fontSize: "20px",
-                    fontWeight: "bold",                  
-                  }}>Content</Typography>
-                  <Field
-                    name="content"
-                    type="text"
-                    component="textarea"
-                    rows={16}
-                    cols={50}
-                    required
-                    fullWidth
-                    
-                  />
-                </Box>
-                <DialogActions>
-                  <Button onClick={handleClose}>Cancel</Button>
-                  <Button onClick={submitForm}>Save</Button>
-                </DialogActions>
-              </Form>
-            )}
-          </Formik>
-        </DialogContent>
-      </Dialog>
+      {showForm && (
+        <Box display="flex" justifyContent="center">
+          <Box style={{ width: "50%" }}>
+            <Typography variant="h5" align="center" gutterBottom>Create Report</Typography>
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+              <TextField
+                label="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                fullWidth
+                required
+              />
+              <TextField
+                label="Content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                fullWidth
+                required
+                multiline
+                rows={8}
+                sx={{ mt: 2 }}
+              />
+              <Box display="flex" justifyContent="center">
+                <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                  Send
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      )}
 
       <Box>
-        {reports.map((report, index) => (
-          <Box key={index} marginBottom={2}>
-            <Typography variant="h6">{report.title}</Typography>
-            <Typography variant="body1">{report.content}</Typography>
-          </Box>
-        ))}
+        {isLoading ? (
+          <Typography>Loading...</Typography>
+        ) : (
+          reports?.map((report, index) => (
+            <Card
+              key={index}
+              sx={{
+                backgroundImage: "none",
+                backgroundColor: theme.palette.primary[800],
+                borderRadius: "0.55rem",
+                marginBottom: "20px"
+              }}
+            >
+              <CardContent>
+                <Typography sx={{ fontSize: "20px" }} color={theme.palette.secondary[200]} gutterBottom>
+                  {report.title}
+                </Typography>
+                <Typography sx={{ fontSize: "16px" }} color={theme.palette.secondary[300]} component="div">
+                  {report.content}
+                </Typography>
+                <Typography sx={{ fontSize: "16px" }} color={theme.palette.secondary[300]} component="div">
+                  Reported by: {report.userId}
+                </Typography>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </Box>
     </Box>
   );
