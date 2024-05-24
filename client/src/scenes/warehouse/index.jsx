@@ -25,10 +25,33 @@ const WarehouseCard = ({
   usedVolume,
   freeVolume,
   shelves,
+  onDelete,
 }) => {
   const theme = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
   const { data, isLoading } = useGetUserQuery(manager);
+  const { role, accessToken } = useSelector((state) => state.global); // Access global state
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/wms/delete-warehouse/${_id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete warehouse');
+      } else{
+        alert("Warehouse deleted successfully!");
+        window.location.reload();
+        onDelete(_id); // Notify parent component that warehouse was deleted
+      }
+    } catch (error) {
+      console.error('Error deleting warehouse:', error);
+    }
+  };
 
   return (
     <Card
@@ -57,6 +80,7 @@ const WarehouseCard = ({
         >
           {isExpanded ? "Hide Details" : "Show Details"}
         </Button>
+        
       </CardActions>
       <Collapse 
         in={isExpanded}
@@ -79,51 +103,19 @@ const WarehouseCard = ({
           <Typography>Used Volume: {usedVolume}</Typography>
           <Typography>Free Volume: {freeVolume}</Typography>
           <Typography>Shelves: {shelves.length}</Typography>
+          {role === 'admin' && (
+          <Button 
+            variant='contained'
+            size="medium"
+            onClick={handleDelete}
+            sx={{ mt: 2, mb:1 }}
+          >
+            Delete Warehouse
+          </Button>
+        )}
         </CardContent>
       </Collapse>
     </Card>
-  );
-};
-
-const CreateWarehouseForm = ({ onSubmit }) => {
-  const [name, setName] = useState('');
-  const [location, setLocation] = useState('');
-  const [managerEmail, setManagerEmail] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit({ name, location, managerEmail });
-  };
-
-  return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-      <TextField
-        label="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        fullWidth
-        required
-      />
-      <TextField
-        label="Location"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-        fullWidth
-        required
-        sx={{ mt: 2 }}
-      />
-      <TextField
-        label="Manager Email"
-        value={managerEmail}
-        onChange={(e) => setManagerEmail(e.target.value)}
-        fullWidth
-        required
-        sx={{ mt: 2 }}
-      />
-      <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-        Create Warehouse
-      </Button>
-    </Box>
   );
 };
 
@@ -132,9 +124,14 @@ const Warehouse = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const [showForm, setShowForm] = useState(false);
+  const [name, setName] = useState('');
+  const [location, setLocation] = useState('');
+  const [managerEmail, setManagerEmail] = useState('');
+
   const { role, accessToken } = useSelector((state) => state.global); // Access global state
 
-  const handleCreateWarehouse = async ({ name, location, managerEmail }) => {
+  const handleCreateWarehouse = async (e) => {
+    e.preventDefault();
     try {
       const response = await fetch('http://localhost:5000/wms/create-warehouse', {
         method: 'POST',
@@ -147,6 +144,8 @@ const Warehouse = () => {
 
       if (!response.ok) {
         throw new Error('Failed to create warehouse');
+      } else{
+        alert("Warehouse created successfully!");
       }
 
       // Optionally, refresh the warehouse list or give user feedback here
@@ -211,7 +210,36 @@ const Warehouse = () => {
           >
             {showForm ? "Cancel" : "Create New Warehouse"}
           </Button>
-          {showForm && <CreateWarehouseForm onSubmit={handleCreateWarehouse} />}
+          {showForm && (
+            <Box component="form" onSubmit={handleCreateWarehouse} sx={{ mt: 2 }}>
+              <TextField
+                label="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                fullWidth
+                required
+              />
+              <TextField
+                label="Location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                fullWidth
+                required
+                sx={{ mt: 2 }}
+              />
+              <TextField
+                label="Manager Email"
+                value={managerEmail}
+                onChange={(e) => setManagerEmail(e.target.value)}
+                fullWidth
+                required
+                sx={{ mt: 2 }}
+              />
+              <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                Create Warehouse
+              </Button>
+            </Box>
+          )}
         </>
       )}
     </Box>

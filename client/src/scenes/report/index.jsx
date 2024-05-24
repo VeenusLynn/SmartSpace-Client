@@ -12,6 +12,7 @@ const Report = () => {
   const [content, setContent] = useState('');
 
   const { data: reports, isLoading, refetch } = useGetReportsQuery();
+  console.log("🚀 ~ Report ~ reports:", reports)
 
   const handleCreateReport = () => {
     setShowForm(!showForm);
@@ -93,7 +94,7 @@ const Report = () => {
       {showForm && (
         <Box display="flex" justifyContent="center">
           <Box style={{ width: "50%" }}>
-            <Typography variant="h5" align="center" gutterBottom>Create Report</Typography>
+            <Typography variant="h3" align="center" gutterBottom>Create Report</Typography>
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
               <TextField
                 label="Title"
@@ -113,7 +114,7 @@ const Report = () => {
                 sx={{ mt: 2 }}
               />
               <Box display="flex" justifyContent="center">
-                <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                <Button type="submit" variant="contained" color="primary" sx={{ mt: "2rem", mb:"2rem" }}>
                   Send
                 </Button>
               </Box>
@@ -144,7 +145,7 @@ const Report = () => {
                   {report.content}
                 </Typography>
                 <Typography sx={{ fontSize: "16px" }} color={theme.palette.secondary[300]} component="div">
-                  Reported by: {report.userId}
+                  Reported by: {report.author}
                 </Typography>
               </CardContent>
             </Card>

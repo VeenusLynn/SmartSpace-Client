@@ -5,7 +5,8 @@ const initialState = {
   userId: "664dc03cb27c8db1da21d597",
   user: null,
   role: "admin",
-  accessToken: null,
+  accessToken:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5vQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcxNjQ2NjI3NywiZXhwIjoxNzE3MDcxMDc3fQ.uSrjiPyWxucL7VZqxqguReusp11abM7TG6fz_Lh7_mc",
 };
 
 export const globalSlice = createSlice({

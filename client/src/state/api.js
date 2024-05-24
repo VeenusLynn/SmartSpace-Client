@@ -26,8 +26,16 @@ export const api = createApi({
       query: () => "report/get-all-reports",
       providesTags: ["Reports"],
     }),
+    getOverview: build.query({
+      query: () => "wms/overview",
+      providesTags: ["Warehouses"],
+    }),
   }),
 });
 
-export const { useGetUserQuery, useGetWarehousesQuery, useGetReportsQuery } =
-  api;
+export const {
+  useGetUserQuery,
+  useGetWarehousesQuery,
+  useGetReportsQuery,
+  useGetOverviewQuery,
+} = api;
